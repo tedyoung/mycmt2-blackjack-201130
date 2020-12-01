@@ -19,17 +19,20 @@ public class Hand {
         .mapToInt(Card::rankValue)
         .sum();
 
-    // does the hand contain at least 1 Ace?
-    boolean hasAce = cards
-        .stream()
-        .anyMatch(card -> card.rank() == Rank.ACE);
-
     // if the total hand value <= 11, then count the Ace as 11 by adding 10
-    if (hasAce && handValue <= 11) {
+    if (hasAce() && handValue <= 11) {
       handValue += 10;
     }
 
     return handValue;
+  }
+
+  private boolean hasAce() {
+    // does the hand contain at least 1 Ace?
+    boolean hasAce = cards
+        .stream()
+        .anyMatch(card -> card.rank() == Rank.ACE);
+    return hasAce;
   }
 
   boolean dealerMustDrawCard() {
@@ -62,5 +65,9 @@ public class Hand {
 
   public boolean valueEquals(int target) {
     return value() == target;
+  }
+
+  public boolean isBlackjack() {
+    return valueEquals(21) && cards.size() == 2;
   }
 }
