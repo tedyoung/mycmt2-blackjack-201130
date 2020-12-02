@@ -42,7 +42,12 @@ public class BlackjackController {
   }
 
   @GetMapping("/done")
-  public String gameDone() {
+  public String gameDone(Model model) {
+    GameView gameView = GameView.viewOf(game);
+    model.addAttribute("gameView", gameView);
+
+    model.addAttribute("outcome", game.determineOutcome());
+
     return "done";
   }
 
