@@ -7,6 +7,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest
@@ -22,10 +23,16 @@ public class WebTest {
   }
 
   @Test
-  public void postToStartGamePageIs200() throws Exception {
+  public void postToStartGamePageRedirectsToGameView() throws Exception {
     mockMvc.perform(post("/start-game"))
-           .andExpect(status().is2xxSuccessful());
+           .andExpect(status().is3xxRedirection())
+           .andExpect(redirectedUrl("/game"));
   }
 
+  @Test
+  public void getGamePageIs200() throws Exception {
+    mockMvc.perform(get("/game"))
+           .andExpect(status().is2xxSuccessful());
+  }
 
 }
