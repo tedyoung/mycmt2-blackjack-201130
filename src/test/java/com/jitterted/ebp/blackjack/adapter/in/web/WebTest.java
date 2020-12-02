@@ -35,4 +35,16 @@ public class WebTest {
            .andExpect(status().is2xxSuccessful());
   }
 
+  @Test
+  public void postToHitRedirectToGameView() throws Exception {
+    mockMvc.perform(post("/hit"))
+           .andExpect(status().is3xxRedirection())
+           .andExpect(redirectedUrl("/game"));
+  }
+
+  @Test
+  public void getDonePageIs200() throws Exception {
+    mockMvc.perform(get("/done"))
+           .andExpect(status().is2xxSuccessful());
+  }
 }

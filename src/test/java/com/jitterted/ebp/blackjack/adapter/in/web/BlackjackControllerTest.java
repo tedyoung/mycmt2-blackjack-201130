@@ -49,4 +49,35 @@ class BlackjackControllerTest {
     assertThat(gameView.getPlayerCards())
         .containsExactly("10♦", "K♦");
   }
+
+  @Test
+  public void hitCommandDealsAdditionalCardToPlayer() throws Exception {
+    Game game = new Game();
+    BlackjackController blackjackController = new BlackjackController(game);
+    blackjackController.startGame();
+
+    blackjackController.playerHits();
+
+    assertThat(game.playerHand().cards())
+        .hasSize(3);
+  }
+
+  @Test
+  public void whenPlayerIsDoneAfterBustingRedirectToDonePage() throws Exception {
+    Deck stubDeck = new StubDeck(List.of(new Card(Suit.DIAMONDS, Rank.TEN),
+                                         new Card(Suit.HEARTS, Rank.TWO),
+                                         new Card(Suit.DIAMONDS, Rank.KING),
+                                         new Card(Suit.CLUBS, Rank.THREE),
+                                         new Card(Suit.DIAMONDS, Rank.SEVEN)));
+
+    Game game = new Game(stubDeck);
+    BlackjackController blackjackController = new BlackjackController(game);
+    blackjackController.startGame();
+
+    String view = blackjackController.playerHits();
+
+    assertThat(view)
+        .isEqualTo("redirect:/done");
+  }
+
 }
