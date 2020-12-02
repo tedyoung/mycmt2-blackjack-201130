@@ -43,6 +43,13 @@ public class WebTest {
   }
 
   @Test
+  public void postToStandRedirectToDone() throws Exception {
+    mockMvc.perform(post("/stand"))
+           .andExpect(status().is3xxRedirection())
+           .andExpect(redirectedUrl("/done"));
+  }
+
+  @Test
   public void getDonePageIs200() throws Exception {
     mockMvc.perform(get("/done"))
            .andExpect(status().is2xxSuccessful());

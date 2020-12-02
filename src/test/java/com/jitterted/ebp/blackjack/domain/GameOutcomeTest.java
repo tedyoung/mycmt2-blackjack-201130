@@ -17,7 +17,6 @@ public class GameOutcomeTest {
     Game game = new Game(deck);
     game.initialDeal();
     game.playerStands();
-    game.dealerTurn();
 
     // then outcome
     assertThat(game.determineOutcome())
@@ -34,10 +33,30 @@ public class GameOutcomeTest {
 
     game.initialDeal();
     game.playerStands();
-    game.dealerTurn();
 
     assertThat(game.determineOutcome())
         .isEqualTo("You win Blackjack!");
+  }
+
+  @Test
+  public void playerStandsResultsInDealerTakingItsTurn() throws Exception {
+    Deck deck = new StubDeck(List.of(new Card(Suit.HEARTS, Rank.JACK), // dealt to the player
+                                     new Card(Suit.SPADES, Rank.JACK), // dealer
+                                     new Card(Suit.DIAMONDS, Rank.QUEEN), // player
+                                     new Card(Suit.CLUBS, Rank.SIX),
+                                     new Card(Suit.SPADES, Rank.TWO)));
+    Game game = new Game(deck);
+    game.initialDeal();
+
+    game.playerStands();
+
+    assertThat(game.dealerHand().cards())
+        .hasSize(3);
+  }
+
+  @Test
+  public void dealerTakesTurnTwiceThrowsException() throws Exception {
+    // exercise for the reader
   }
 
 }
